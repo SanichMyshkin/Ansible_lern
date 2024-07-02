@@ -1,0 +1,16 @@
+- hosts: servers
+  # become: yes
+  tasks:
+    - name: Install git on vps
+      ansible.builtin.apt:
+        name: git 
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Install tree on vps
+      ansible.builtin.apt:
+        name: tree 
+        state: absent
+        update_cache: yes
+      become: yes
