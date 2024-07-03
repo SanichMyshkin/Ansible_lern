@@ -1,16 +1,37 @@
 - hosts: servers
-  # become: yes
+
   tasks:
-    - name: Install git on vps
+    - name: update cache
       ansible.builtin.apt:
-        name: git 
-        state: present
         update_cache: yes
+        #tags: update_cache
       become: yes
 
-    - name: Install tree on vps
+    - name: install git
       ansible.builtin.apt:
-        name: tree 
-        state: absent
-        update_cache: yes
+        name: git
+        state: present
+      tags: install_git
+      become: yes
+
+    - name: install tree
+      ansible.builtin.apt:
+        name: tree
+        state: present
+      tags: install_tree
+      become: yes
+
+    - name: install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      tags: install_nginx
+      become: yes
+
+    - name: add user Sanich
+      ansible.builtin.user:
+        user: Sanich
+        comment: "New user Sanich"
+        shell: /bin/bash
+      tags: add_user_Sanich
       become: yes
