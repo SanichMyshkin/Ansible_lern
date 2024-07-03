@@ -4,8 +4,8 @@ ad-hoc:
 playbook:
 	ansible-playbook playbook.yml -i inventory.ini
 
-playboogNginx:
-	ansible-playbook playboogNginx.yml -i inventory.ini
+playbookNginx:
+	ansible-playbook playbookNginx.yml -i inventory.ini
 
 
 add_user:
