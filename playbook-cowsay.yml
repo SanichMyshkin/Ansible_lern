@@ -6,10 +6,21 @@
     date: "{{ ansible_date_time['date'] }} {{ ansible_date_time['time'] }} "
 
   tasks:
+    - name: Install cowsay
+      ansible.builtin.apt:
+        name: cowsay
+        state: present
+      become: yes
+
+    - name: Print message
+      ansible.builtin.command: "cowsay 'This is server {{ ansible_hostname }}!'"
+      register: cowsay_result
+    
     - name: copy HTML 
       ansible.builtin.template:
         src: templates/index.html.j2
         dest: '{{ root_dir }}/index.html.j2'
       become: yes
+
     
       
