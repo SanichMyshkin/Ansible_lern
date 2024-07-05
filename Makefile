@@ -16,3 +16,6 @@ install:
 
 all_tags:
 	ansible-playbook --check playbook.yml -i inventory.ini --check -t all
+
+facts:
+	ansible servers -i inventory.ini -m setup

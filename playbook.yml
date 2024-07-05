@@ -1,37 +1,36 @@
 - hosts: servers
-
+  gather_facts: no
+  vars:
+    users:
+      - jaime
+      - santa
+      - robert
   tasks:
-    - name: update cache
-      ansible.builtin.apt:
-        update_cache: yes
-        #tags: update_cache
-      become: yes
-
-    - name: install git
-      ansible.builtin.apt:
-        name: git
-        state: present
-      tags: install_git
-      become: yes
-
-    - name: install tree
-      ansible.builtin.apt:
-        name: tree
-        state: present
-      tags: install_tree
-      become: yes
-
-    - name: install nginx
-      ansible.builtin.apt:
-        name: nginx
-        state: present
-      tags: install_nginx
-      become: yes
-
-    - name: add user Sanich
+    - name: add users
       ansible.builtin.user:
-        user: Sanich
-        comment: "New user Sanich"
-        shell: /bin/bash
-      tags: add_user_Sanich
+        name: "{{ item }}"
+        state: present
+      loop: "{{ users }}"
       become: yes
+
+    - name: create config
+      ansible.builtin.template:
+        src: files/.gitconfig
+        dest: "/home/{{ item }}/.gitconfig"
+      loop: "{{ users }}"
+      become: yes
+
+    - name: create .ssh directory
+      ansible.builtin.file:
+        path: '/home/{{ item }}/.ssh'
+        state: directory
+      loop: "{{ users }}"
+      become: yes
+
+    - name: copy public key
+      ansible.builtin.copy:
+        src: files/id_rsa.pub
+        dest: '/home/{{ item }}/.ssh/authorized_keys'
+      loop: '{{ users }}'
+      become: yes
+
