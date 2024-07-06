@@ -1,0 +1,34 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    ssh_key: "{{ lookup('file', 'files/id_rsa.pub') }}"
+  
+  tasks:
+    - name: Install necessary packages
+      tags: install_packages
+      ansible.builtin.package:
+        name:
+          - git
+          - curl
+          - vim
+        state: present
+
+    - name: Ensure the developer user directory exists
+      tags: manage_keys
+      ansible.builtin.file:
+        path: "/home/developer/.ssh"
+        state: directory
+
+    - name: add user developer
+      tags: manage_keys
+      ansible.builtin.user:
+        name: developer
+        state: present
+
+    - name: Add developer SSH key
+      tags: manage_keys
+      ansible.posix.authorized_key:
+        user: developer
+        state: present
+        key: "{{ ssh_key }}"

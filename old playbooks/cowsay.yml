@@ -16,6 +16,10 @@
       ansible.builtin.command: "cowsay 'This is server {{ ansible_hostname }}!'"
       register: cowsay_result
     
+    - name: Debug cowsay result
+      ansible.builtin.debug:
+        msg: "{{ cowsay_result.stdout }}"
+
     - name: copy HTML 
       ansible.builtin.template:
         src: templates/index.html.j2

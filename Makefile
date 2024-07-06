@@ -19,3 +19,6 @@ all_tags:
 
 facts:
 	ansible servers -i inventory.ini -m setup
+
+roles:
+	ansible-galaxy install -r requirements.yml
